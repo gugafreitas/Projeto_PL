@@ -114,88 +114,10 @@ t_DOT = r'\.'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 
-t_ignore  = ' \t \r'
+t_ignore  = ' \t\r'
 
 def t_error(t):
     print('Illegal character: ', t.value[0])
     t.lexer.skip(1)
-    
-example2 = '''
-title = "TOML Example"
-
-[owner]
-name = "Tom Preston-Werner"
-date = 2010-04-23
-time = 21:30:00
-
-[database]
-server = "192.168.1.1"
-ports = [ 8001, 8001, 8002 ]
-connection_max = 5000
-enabled = true
-
-[servers]
-
-[servers.alpha]
-ip = "10.0.0.1"
-dc = "eqdc10"
-
-[servers.beta]
-ip = "10.0.0.2"
-dc = "eqdc10"
-
-# Line breaks are OK when inside arrays
-hosts = [
-"alpha",
-"omega"
-]
-'''
-
-example3 = '''title = "TOML Example"
-
-hosts = [
-"alpha",
-"omega"
-]'''
 
 lexer = lex.lex()
-lexer.input(example3)
-
-while tok := lexer.token():
-    print(tok)
-
-'''
-{
-  "title": "TOML Example",
-  "owner": {
-    "name": "Tom Preston-Werner",
-    "date": "2010-04-23",
-    "time": "21:30:00.000"
-  },
-  "database": {
-    "server": "192.168.1.1",
-    "ports": [
-      8001,
-      8001,
-      8002
-    ],
-    "connection_max": 5000,
-    "enabled": true
-  },
-  "servers": {
-    "alpha": {
-      "ip": "10.0.0.1",
-      "dc": "eqdc10"
-    },
-    "beta": {
-      "ip": "10.0.0.2",
-      "dc": "eqdc10",
-      "hosts": [
-        "alpha",
-        "omega"
-      ]
-    }
-  }
-}
-
-'''
