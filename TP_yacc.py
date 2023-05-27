@@ -5,15 +5,15 @@ from TP_lex import tokens
 
 def p_toml(p):
     '''
-    toml: contents
+    toml : contents
     '''
-    p[0] = json.dumps(p[1], indent = len(p[1]))
+    p[0] = json.dumps(p[1], indent = 2)
 
 #json_object = json.dumps(dictionary, indent=len(dictionary))
 
 def p_contents(p):
     '''
-    contents: content
+    contents : content
             | content NEWLINE contents
     '''
     if len(p) == 2:
@@ -23,15 +23,15 @@ def p_contents(p):
 
 def p_content(p):
     '''
-    content: table
+    content : table 
            | variable
     '''
     p[0] = p[1]
 
 def p_table(p):
     '''
-    table : '[' KEY ']' NEWLINE table_contents
-          | '[' KEY '.' KEY ']' NEWLINE table_contents
+    table : LSQBRACKET KEY RSQBRACKET NEWLINE table_contents
+          | LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE table_contents
     '''
     if len(p) == 6:
         p[0] = {p[2]: p[5]}
@@ -40,10 +40,10 @@ def p_table(p):
 
 def p_table_empty(p):
     '''
-    table : '[' KEY ']'
-          | '[' KEY '.' KEY ']'
+    table : LSQBRACKET KEY RSQBRACKET NEWLINE
+          | LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE
     '''
-    if len(p) == 4:
+    if len(p) == 5:
         p[0] = {p[2]: {}}
     else:
         p[0] = {p[2]: {p[4]: {}}}
@@ -51,7 +51,7 @@ def p_table_empty(p):
 def p_table_contents(p):
     '''
     table_contents : variable
-                   | variable NEWLINE table_contents
+                   | variable table_contents
     '''
     if len(p) == 2:
         p[0] = p[1]
@@ -63,9 +63,13 @@ def p_table_contents(p):
 
 def p_variable(p):
     '''
-    variable: KEY '=' value
+    variable : KEY EQUALS value
+             | KEY EQUALS value NEWLINE
     '''
-    p[0] = {p[1]: p[3]}
+    if len(p) == 4:
+        p[0] = {p[1]: p[3]}
+    else:
+        p[0] = {p[1]: p[3]}
 
 def p_value(p):
     '''
@@ -79,8 +83,8 @@ def p_value(p):
 
 def p_list(p):
     '''
-    list : '[' ']'
-         | '[' list_values ']'
+    list : LSQBRACKET RSQBRACKET
+         | LSQBRACKET list_values RSQBRACKET
     '''
     if len(p) == 3:
         p[0] = []
@@ -90,8 +94,8 @@ def p_list(p):
 def p_list_values(p):
     '''
     list_values : value
-                 | value ',' list_values
-                 | value ',' NEWLINE list_values
+                 | value COMMA list_values
+                 | value COMMA NEWLINE list_values
     '''
     if len(p) == 2:
         p[0] = []
@@ -107,7 +111,7 @@ def p_list_values(p):
         
 def p_error(p):
     print("Syntax error in input!",p)
-    parser.success=False
+    #parser.success=False
 
     
 
@@ -123,7 +127,9 @@ for linha in f:
 
 
 
-parser.parse(source)
+parser.pareseIn = parser.parse(source)
+
+#json_str = json.dumps(pareseIn, indent=2)
 
 #json_object = json.dumps(dictionary, indent=len(dictionary))
 
@@ -131,6 +137,6 @@ parser.parse(source)
 if parser.success:
    print('Parsing completed!')
    with open("output.json", "a") as outfile:
-        outfile.write(parser.json_object)
+        outfile.write(parser.pareseIn)
 else:
    print('Parsing failed!')

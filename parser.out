@@ -1,0 +1,525 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    COMMENT
+    LCHAVETA
+    LPAREN
+    RCHAVETA
+    RPAREN
+
+Grammar
+
+Rule 0     S' -> toml
+Rule 1     toml -> contents
+Rule 2     contents -> content
+Rule 3     contents -> content NEWLINE contents
+Rule 4     content -> table
+Rule 5     content -> variable
+Rule 6     table -> LSQBRACKET KEY RSQBRACKET NEWLINE table_contents
+Rule 7     table -> LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE table_contents
+Rule 8     table -> LSQBRACKET KEY RSQBRACKET NEWLINE
+Rule 9     table -> LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE
+Rule 10    table_contents -> variable
+Rule 11    table_contents -> variable table_contents
+Rule 12    variable -> KEY EQUALS value
+Rule 13    variable -> KEY EQUALS value NEWLINE
+Rule 14    value -> STRING
+Rule 15    value -> BOOLEAN
+Rule 16    value -> NUMBER
+Rule 17    value -> DATETIME
+Rule 18    value -> list
+Rule 19    list -> LSQBRACKET RSQBRACKET
+Rule 20    list -> LSQBRACKET list_values RSQBRACKET
+Rule 21    list_values -> value
+Rule 22    list_values -> value COMMA list_values
+Rule 23    list_values -> value COMMA NEWLINE list_values
+
+Terminals, with rules where they appear
+
+BOOLEAN              : 15
+COMMA                : 22 23
+COMMENT              : 
+DATETIME             : 17
+DOT                  : 7 9
+EQUALS               : 12 13
+KEY                  : 6 7 7 8 9 9 12 13
+LCHAVETA             : 
+LPAREN               : 
+LSQBRACKET           : 6 7 8 9 19 20
+NEWLINE              : 3 6 7 8 9 13 23
+NUMBER               : 16
+RCHAVETA             : 
+RPAREN               : 
+RSQBRACKET           : 6 7 8 9 19 20
+STRING               : 14
+error                : 
+
+Nonterminals, with rules where they appear
+
+content              : 2 3
+contents             : 1 3
+list                 : 18
+list_values          : 20 22 23
+table                : 4
+table_contents       : 6 7 11
+toml                 : 0
+value                : 12 13 21 22 23
+variable             : 5 10 11
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . toml
+    (1) toml -> . contents
+    (2) contents -> . content
+    (3) contents -> . content NEWLINE contents
+    (4) content -> . table
+    (5) content -> . variable
+    (6) table -> . LSQBRACKET KEY RSQBRACKET NEWLINE table_contents
+    (7) table -> . LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE table_contents
+    (8) table -> . LSQBRACKET KEY RSQBRACKET NEWLINE
+    (9) table -> . LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE
+    (12) variable -> . KEY EQUALS value
+    (13) variable -> . KEY EQUALS value NEWLINE
+
+    LSQBRACKET      shift and go to state 6
+    KEY             shift and go to state 7
+
+    toml                           shift and go to state 1
+    contents                       shift and go to state 2
+    content                        shift and go to state 3
+    table                          shift and go to state 4
+    variable                       shift and go to state 5
+
+state 1
+
+    (0) S' -> toml .
+
+
+
+state 2
+
+    (1) toml -> contents .
+
+    $end            reduce using rule 1 (toml -> contents .)
+
+
+state 3
+
+    (2) contents -> content .
+    (3) contents -> content . NEWLINE contents
+
+    $end            reduce using rule 2 (contents -> content .)
+    NEWLINE         shift and go to state 8
+
+
+state 4
+
+    (4) content -> table .
+
+    NEWLINE         reduce using rule 4 (content -> table .)
+    $end            reduce using rule 4 (content -> table .)
+
+
+state 5
+
+    (5) content -> variable .
+
+    NEWLINE         reduce using rule 5 (content -> variable .)
+    $end            reduce using rule 5 (content -> variable .)
+
+
+state 6
+
+    (6) table -> LSQBRACKET . KEY RSQBRACKET NEWLINE table_contents
+    (7) table -> LSQBRACKET . KEY DOT KEY RSQBRACKET NEWLINE table_contents
+    (8) table -> LSQBRACKET . KEY RSQBRACKET NEWLINE
+    (9) table -> LSQBRACKET . KEY DOT KEY RSQBRACKET NEWLINE
+
+    KEY             shift and go to state 9
+
+
+state 7
+
+    (12) variable -> KEY . EQUALS value
+    (13) variable -> KEY . EQUALS value NEWLINE
+
+    EQUALS          shift and go to state 10
+
+
+state 8
+
+    (3) contents -> content NEWLINE . contents
+    (2) contents -> . content
+    (3) contents -> . content NEWLINE contents
+    (4) content -> . table
+    (5) content -> . variable
+    (6) table -> . LSQBRACKET KEY RSQBRACKET NEWLINE table_contents
+    (7) table -> . LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE table_contents
+    (8) table -> . LSQBRACKET KEY RSQBRACKET NEWLINE
+    (9) table -> . LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE
+    (12) variable -> . KEY EQUALS value
+    (13) variable -> . KEY EQUALS value NEWLINE
+
+    LSQBRACKET      shift and go to state 6
+    KEY             shift and go to state 7
+
+    content                        shift and go to state 3
+    contents                       shift and go to state 11
+    table                          shift and go to state 4
+    variable                       shift and go to state 5
+
+state 9
+
+    (6) table -> LSQBRACKET KEY . RSQBRACKET NEWLINE table_contents
+    (7) table -> LSQBRACKET KEY . DOT KEY RSQBRACKET NEWLINE table_contents
+    (8) table -> LSQBRACKET KEY . RSQBRACKET NEWLINE
+    (9) table -> LSQBRACKET KEY . DOT KEY RSQBRACKET NEWLINE
+
+    RSQBRACKET      shift and go to state 12
+    DOT             shift and go to state 13
+
+
+state 10
+
+    (12) variable -> KEY EQUALS . value
+    (13) variable -> KEY EQUALS . value NEWLINE
+    (14) value -> . STRING
+    (15) value -> . BOOLEAN
+    (16) value -> . NUMBER
+    (17) value -> . DATETIME
+    (18) value -> . list
+    (19) list -> . LSQBRACKET RSQBRACKET
+    (20) list -> . LSQBRACKET list_values RSQBRACKET
+
+    STRING          shift and go to state 15
+    BOOLEAN         shift and go to state 16
+    NUMBER          shift and go to state 17
+    DATETIME        shift and go to state 18
+    LSQBRACKET      shift and go to state 20
+
+    value                          shift and go to state 14
+    list                           shift and go to state 19
+
+state 11
+
+    (3) contents -> content NEWLINE contents .
+
+    $end            reduce using rule 3 (contents -> content NEWLINE contents .)
+
+
+state 12
+
+    (6) table -> LSQBRACKET KEY RSQBRACKET . NEWLINE table_contents
+    (8) table -> LSQBRACKET KEY RSQBRACKET . NEWLINE
+
+    NEWLINE         shift and go to state 21
+
+
+state 13
+
+    (7) table -> LSQBRACKET KEY DOT . KEY RSQBRACKET NEWLINE table_contents
+    (9) table -> LSQBRACKET KEY DOT . KEY RSQBRACKET NEWLINE
+
+    KEY             shift and go to state 22
+
+
+state 14
+
+    (12) variable -> KEY EQUALS value .
+    (13) variable -> KEY EQUALS value . NEWLINE
+
+  ! shift/reduce conflict for NEWLINE resolved as shift
+    $end            reduce using rule 12 (variable -> KEY EQUALS value .)
+    KEY             reduce using rule 12 (variable -> KEY EQUALS value .)
+    NEWLINE         shift and go to state 23
+
+  ! NEWLINE         [ reduce using rule 12 (variable -> KEY EQUALS value .) ]
+
+
+state 15
+
+    (14) value -> STRING .
+
+    NEWLINE         reduce using rule 14 (value -> STRING .)
+    $end            reduce using rule 14 (value -> STRING .)
+    KEY             reduce using rule 14 (value -> STRING .)
+    COMMA           reduce using rule 14 (value -> STRING .)
+    RSQBRACKET      reduce using rule 14 (value -> STRING .)
+
+
+state 16
+
+    (15) value -> BOOLEAN .
+
+    NEWLINE         reduce using rule 15 (value -> BOOLEAN .)
+    $end            reduce using rule 15 (value -> BOOLEAN .)
+    KEY             reduce using rule 15 (value -> BOOLEAN .)
+    COMMA           reduce using rule 15 (value -> BOOLEAN .)
+    RSQBRACKET      reduce using rule 15 (value -> BOOLEAN .)
+
+
+state 17
+
+    (16) value -> NUMBER .
+
+    NEWLINE         reduce using rule 16 (value -> NUMBER .)
+    $end            reduce using rule 16 (value -> NUMBER .)
+    KEY             reduce using rule 16 (value -> NUMBER .)
+    COMMA           reduce using rule 16 (value -> NUMBER .)
+    RSQBRACKET      reduce using rule 16 (value -> NUMBER .)
+
+
+state 18
+
+    (17) value -> DATETIME .
+
+    NEWLINE         reduce using rule 17 (value -> DATETIME .)
+    $end            reduce using rule 17 (value -> DATETIME .)
+    KEY             reduce using rule 17 (value -> DATETIME .)
+    COMMA           reduce using rule 17 (value -> DATETIME .)
+    RSQBRACKET      reduce using rule 17 (value -> DATETIME .)
+
+
+state 19
+
+    (18) value -> list .
+
+    NEWLINE         reduce using rule 18 (value -> list .)
+    $end            reduce using rule 18 (value -> list .)
+    KEY             reduce using rule 18 (value -> list .)
+    COMMA           reduce using rule 18 (value -> list .)
+    RSQBRACKET      reduce using rule 18 (value -> list .)
+
+
+state 20
+
+    (19) list -> LSQBRACKET . RSQBRACKET
+    (20) list -> LSQBRACKET . list_values RSQBRACKET
+    (21) list_values -> . value
+    (22) list_values -> . value COMMA list_values
+    (23) list_values -> . value COMMA NEWLINE list_values
+    (14) value -> . STRING
+    (15) value -> . BOOLEAN
+    (16) value -> . NUMBER
+    (17) value -> . DATETIME
+    (18) value -> . list
+    (19) list -> . LSQBRACKET RSQBRACKET
+    (20) list -> . LSQBRACKET list_values RSQBRACKET
+
+    RSQBRACKET      shift and go to state 24
+    STRING          shift and go to state 15
+    BOOLEAN         shift and go to state 16
+    NUMBER          shift and go to state 17
+    DATETIME        shift and go to state 18
+    LSQBRACKET      shift and go to state 20
+
+    list_values                    shift and go to state 25
+    value                          shift and go to state 26
+    list                           shift and go to state 19
+
+state 21
+
+    (6) table -> LSQBRACKET KEY RSQBRACKET NEWLINE . table_contents
+    (8) table -> LSQBRACKET KEY RSQBRACKET NEWLINE .
+    (10) table_contents -> . variable
+    (11) table_contents -> . variable table_contents
+    (12) variable -> . KEY EQUALS value
+    (13) variable -> . KEY EQUALS value NEWLINE
+
+    NEWLINE         reduce using rule 8 (table -> LSQBRACKET KEY RSQBRACKET NEWLINE .)
+    $end            reduce using rule 8 (table -> LSQBRACKET KEY RSQBRACKET NEWLINE .)
+    KEY             shift and go to state 7
+
+    table_contents                 shift and go to state 27
+    variable                       shift and go to state 28
+
+state 22
+
+    (7) table -> LSQBRACKET KEY DOT KEY . RSQBRACKET NEWLINE table_contents
+    (9) table -> LSQBRACKET KEY DOT KEY . RSQBRACKET NEWLINE
+
+    RSQBRACKET      shift and go to state 29
+
+
+state 23
+
+    (13) variable -> KEY EQUALS value NEWLINE .
+
+    NEWLINE         reduce using rule 13 (variable -> KEY EQUALS value NEWLINE .)
+    $end            reduce using rule 13 (variable -> KEY EQUALS value NEWLINE .)
+    KEY             reduce using rule 13 (variable -> KEY EQUALS value NEWLINE .)
+
+
+state 24
+
+    (19) list -> LSQBRACKET RSQBRACKET .
+
+    NEWLINE         reduce using rule 19 (list -> LSQBRACKET RSQBRACKET .)
+    $end            reduce using rule 19 (list -> LSQBRACKET RSQBRACKET .)
+    KEY             reduce using rule 19 (list -> LSQBRACKET RSQBRACKET .)
+    COMMA           reduce using rule 19 (list -> LSQBRACKET RSQBRACKET .)
+    RSQBRACKET      reduce using rule 19 (list -> LSQBRACKET RSQBRACKET .)
+
+
+state 25
+
+    (20) list -> LSQBRACKET list_values . RSQBRACKET
+
+    RSQBRACKET      shift and go to state 30
+
+
+state 26
+
+    (21) list_values -> value .
+    (22) list_values -> value . COMMA list_values
+    (23) list_values -> value . COMMA NEWLINE list_values
+
+    RSQBRACKET      reduce using rule 21 (list_values -> value .)
+    COMMA           shift and go to state 31
+
+
+state 27
+
+    (6) table -> LSQBRACKET KEY RSQBRACKET NEWLINE table_contents .
+
+    NEWLINE         reduce using rule 6 (table -> LSQBRACKET KEY RSQBRACKET NEWLINE table_contents .)
+    $end            reduce using rule 6 (table -> LSQBRACKET KEY RSQBRACKET NEWLINE table_contents .)
+
+
+state 28
+
+    (10) table_contents -> variable .
+    (11) table_contents -> variable . table_contents
+    (10) table_contents -> . variable
+    (11) table_contents -> . variable table_contents
+    (12) variable -> . KEY EQUALS value
+    (13) variable -> . KEY EQUALS value NEWLINE
+
+    NEWLINE         reduce using rule 10 (table_contents -> variable .)
+    $end            reduce using rule 10 (table_contents -> variable .)
+    KEY             shift and go to state 7
+
+    variable                       shift and go to state 28
+    table_contents                 shift and go to state 32
+
+state 29
+
+    (7) table -> LSQBRACKET KEY DOT KEY RSQBRACKET . NEWLINE table_contents
+    (9) table -> LSQBRACKET KEY DOT KEY RSQBRACKET . NEWLINE
+
+    NEWLINE         shift and go to state 33
+
+
+state 30
+
+    (20) list -> LSQBRACKET list_values RSQBRACKET .
+
+    NEWLINE         reduce using rule 20 (list -> LSQBRACKET list_values RSQBRACKET .)
+    $end            reduce using rule 20 (list -> LSQBRACKET list_values RSQBRACKET .)
+    KEY             reduce using rule 20 (list -> LSQBRACKET list_values RSQBRACKET .)
+    COMMA           reduce using rule 20 (list -> LSQBRACKET list_values RSQBRACKET .)
+    RSQBRACKET      reduce using rule 20 (list -> LSQBRACKET list_values RSQBRACKET .)
+
+
+state 31
+
+    (22) list_values -> value COMMA . list_values
+    (23) list_values -> value COMMA . NEWLINE list_values
+    (21) list_values -> . value
+    (22) list_values -> . value COMMA list_values
+    (23) list_values -> . value COMMA NEWLINE list_values
+    (14) value -> . STRING
+    (15) value -> . BOOLEAN
+    (16) value -> . NUMBER
+    (17) value -> . DATETIME
+    (18) value -> . list
+    (19) list -> . LSQBRACKET RSQBRACKET
+    (20) list -> . LSQBRACKET list_values RSQBRACKET
+
+    NEWLINE         shift and go to state 35
+    STRING          shift and go to state 15
+    BOOLEAN         shift and go to state 16
+    NUMBER          shift and go to state 17
+    DATETIME        shift and go to state 18
+    LSQBRACKET      shift and go to state 20
+
+    value                          shift and go to state 26
+    list_values                    shift and go to state 34
+    list                           shift and go to state 19
+
+state 32
+
+    (11) table_contents -> variable table_contents .
+
+    NEWLINE         reduce using rule 11 (table_contents -> variable table_contents .)
+    $end            reduce using rule 11 (table_contents -> variable table_contents .)
+
+
+state 33
+
+    (7) table -> LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE . table_contents
+    (9) table -> LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE .
+    (10) table_contents -> . variable
+    (11) table_contents -> . variable table_contents
+    (12) variable -> . KEY EQUALS value
+    (13) variable -> . KEY EQUALS value NEWLINE
+
+    NEWLINE         reduce using rule 9 (table -> LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE .)
+    $end            reduce using rule 9 (table -> LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE .)
+    KEY             shift and go to state 7
+
+    table_contents                 shift and go to state 36
+    variable                       shift and go to state 28
+
+state 34
+
+    (22) list_values -> value COMMA list_values .
+
+    RSQBRACKET      reduce using rule 22 (list_values -> value COMMA list_values .)
+
+
+state 35
+
+    (23) list_values -> value COMMA NEWLINE . list_values
+    (21) list_values -> . value
+    (22) list_values -> . value COMMA list_values
+    (23) list_values -> . value COMMA NEWLINE list_values
+    (14) value -> . STRING
+    (15) value -> . BOOLEAN
+    (16) value -> . NUMBER
+    (17) value -> . DATETIME
+    (18) value -> . list
+    (19) list -> . LSQBRACKET RSQBRACKET
+    (20) list -> . LSQBRACKET list_values RSQBRACKET
+
+    STRING          shift and go to state 15
+    BOOLEAN         shift and go to state 16
+    NUMBER          shift and go to state 17
+    DATETIME        shift and go to state 18
+    LSQBRACKET      shift and go to state 20
+
+    value                          shift and go to state 26
+    list_values                    shift and go to state 37
+    list                           shift and go to state 19
+
+state 36
+
+    (7) table -> LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE table_contents .
+
+    NEWLINE         reduce using rule 7 (table -> LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE table_contents .)
+    $end            reduce using rule 7 (table -> LSQBRACKET KEY DOT KEY RSQBRACKET NEWLINE table_contents .)
+
+
+state 37
+
+    (23) list_values -> value COMMA NEWLINE list_values .
+
+    RSQBRACKET      reduce using rule 23 (list_values -> value COMMA NEWLINE list_values .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for NEWLINE in state 14 resolved as shift

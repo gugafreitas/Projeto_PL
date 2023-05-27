@@ -1,0 +1,6 @@
+title = "TOML Example"
+
+hosts = [
+"alpha",
+"omega"
+]

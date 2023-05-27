@@ -2,7 +2,7 @@ import datetime
 import ply.lex as lex
 import re
 
-literals = ['[', ']', '=', ',', '{', '}', '.']
+#literals = ['[', ']', '=', ',', '{', '}', '.','(',')']
 
 tokens = (
     'DATETIME',
@@ -10,11 +10,23 @@ tokens = (
 #    'SUB_TABLE',
     'KEY',
 #    'ARRAY',
+    #'INLINETABLE', #?
+    #'TABLENAME', #?
+    #'SUBTABLENAME', #?
     'COMMENT',
     'STRING',
     'NUMBER',
     'BOOLEAN',
-    'NEWLINE'
+    'NEWLINE',
+    'EQUALS',
+    'LSQBRACKET', 
+    'RSQBRACKET',
+    'COMMA',
+    'LCHAVETA', #?
+    'RCHAVETA', #?
+    'DOT', #?
+    'LPAREN', #?
+    'RPAREN' #?
 )
 
 # [table-1]
@@ -75,6 +87,7 @@ def t_BOOLEAN(t):
         t.value = False
     return t
 
+
 #def t_TABLE(t):
 #    r'[a-zA-Z]\w+'
 #    return t
@@ -87,7 +100,21 @@ def t_KEY(t):
     r'[a-zA-Z]\w+'
     return t
 
-t_ignore  = ' \t'
+
+#t_INLINETABLE = r'\{[^{}]*\}'
+#t_TABLENAME = r'(?<=\[)[^\[\]""]+(?=\])'
+#t_SUBTABLENAME = r'(?<=\[)[^\[\]"]+\.[^\[\]"]+(?=\])'
+t_LSQBRACKET = r'\['
+t_RSQBRACKET = r'\]'
+t_COMMA = r'\,'
+t_EQUALS = r'\='
+t_LCHAVETA = r'\{'
+t_RCHAVETA = r'\}'
+t_DOT = r'\.'
+t_LPAREN = r'\('
+t_RPAREN = r'\)'
+
+t_ignore  = ' \t \r'
 
 def t_error(t):
     print('Illegal character: ', t.value[0])
@@ -124,8 +151,15 @@ hosts = [
 ]
 '''
 
+example3 = '''title = "TOML Example"
+
+hosts = [
+"alpha",
+"omega"
+]'''
+
 lexer = lex.lex()
-lexer.input(example2)
+lexer.input(example3)
 
 while tok := lexer.token():
     print(tok)
