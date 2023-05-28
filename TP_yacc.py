@@ -15,10 +15,10 @@ def p_toml(p):
 def p_contents(p):
     '''
     contents : contents variables
-             | contents table
-             | contents subtable
              | variables
+             | contents table
              | table
+             | contents subtable
              | subtable
     '''
     if len(p) == 3:
@@ -40,8 +40,6 @@ def p_variables1(p):
     if len(p) == 2:
         p[0] = []
     else:
-        if p[1] is None:
-            p[1] = []
         if isinstance(p[2], tuple):
             p[1].append(p[2])
         p[0] = p[1]
@@ -160,9 +158,11 @@ def rec_Contents(p1,p2):
     if isinstance(p1, dict) and isinstance(p2, dict):
         addDict(p1, p2)
     elif isinstance(p1, dict) and isinstance(p2, tuple):
-        addDict(p1, {p2[0]: p2[1]})
+        dic = {p2[0]: p2[1]}
+        addDict(p1, dic)
     else:
-        addDict(p1, {p2[0][0]: p2[0][1]})
+        nested = {p2[0][0]: p2[0][1]}
+        addDict(p1, nested)
     return p1
     
 
