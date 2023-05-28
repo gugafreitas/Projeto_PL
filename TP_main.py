@@ -8,8 +8,10 @@ from TP_yacc import parser
 def main():
     #TP_lex.input(input)
     source = ""
+
+    fileP = input("Caminho para o ficheiro a testar: ")
     
-    f = open("text.toml",encoding="utf-8")
+    f = open(fileP,encoding="utf-8")
     lines = f.readlines()
     f.close()
     for linha in lines:
