@@ -22,13 +22,7 @@ def p_contents(p):
              | subtable
     '''
     if len(p) == 3:
-        if isinstance(p[1], dict) and isinstance(p[2], dict):
-            addDict(p[1], p[2])
-        elif isinstance(p[1], dict) and isinstance(p[2], tuple):
-            addDict(p[1], {p[2][0]: p[2][1]})
-        else:
-            addDict(p[1], {p[2][0][0]: p[2][0][1]})
-        p[0] = p[1]
+        p[0] = rec_Contents(p[1],p[2])        
     else:
         if isinstance(p[1], tuple):
             p[0] = {p[1][0]: p[1][1]}
@@ -160,6 +154,19 @@ def p_error(p):
     print(f"Syntax error at line {p.lineno}, column {p.lexpos}, '{p.value}'")
 
 
+
+
+def rec_Contents(p1,p2):
+    if isinstance(p1, dict) and isinstance(p2, dict):
+        addDict(p1, p2)
+    elif isinstance(p1, dict) and isinstance(p2, tuple):
+        addDict(p1, {p2[0]: p2[1]})
+    else:
+        addDict(p1, {p2[0][0]: p2[0][1]})
+    return p1
+    
+
+    
 def addDict(dic1, dic2):    
     for key, value in dic2.items():
         if key in dic1 and isinstance(dic1[key], dict):
