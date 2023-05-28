@@ -5,7 +5,7 @@ from TP_lex import tokens
 
 
 
-def p_toml0(p):
+def p_toml(p):
     '''
     toml : contents
     '''
@@ -22,20 +22,17 @@ def p_contents(p):
              | subtable
     '''
     if len(p) == 3:
-        if isinstance(p[1], dict) and isinstance(p[2], tuple):
+        if isinstance(p[1], dict) and isinstance(p[2], dict):
+            addDict(p[1], p[2])
+        elif isinstance(p[1], dict) and isinstance(p[2], tuple):
             addDict(p[1], {p[2][0]: p[2][1]})
-        elif isinstance(p[1], dict) and isinstance(p[2], list) and len(p[2]) == 2:
-            for item in p[2]:
-                addDict(p[1], {item[0]: item[1]})
-        elif isinstance(p[1], dict) and isinstance(p[2], list) and len(p[2]) == 0:  # handle empty list
-            pass
         else:
             addDict(p[1], {p[2][0][0]: p[2][0][1]})
         p[0] = p[1]
     else:
         if isinstance(p[1], tuple):
             p[0] = {p[1][0]: p[1][1]}
-        elif isinstance(p[1], list):
+        else:
             p[0] = dict(p[1])
 
 
@@ -74,18 +71,13 @@ def p_table(p):
     '''
     table : LSQBRACKET KEY RSQBRACKET NEWLINE
           | LSQBRACKET KEY RSQBRACKET NEWLINE variables
+          | LSQBRACKET KEY RSQBRACKET NEWLINE subtable
     '''
     if len(p) == 5:
         p[0] = [(p[2], {})]
     else:
         p[0] = [(p[2], dict(p[5]))]
 
-
-def p_table_subtable(p):
-    '''
-    table : LSQBRACKET KEY RSQBRACKET NEWLINE subtable
-    '''
-    p[0] = [(p[2], dict(p[5]))]
 
 
 
