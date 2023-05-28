@@ -2,17 +2,10 @@ import datetime
 import ply.lex as lex
 import re
 
-#literals = ['[', ']', '=', ',', '{', '}', '.','(',')']
 
 tokens = (
     'DATETIME',
-#    'TABLE',
-#    'SUB_TABLE',
     'KEY',
-#    'ARRAY',
-    #'INLINETABLE', #?
-    #'TABLENAME', #?
-    #'SUBTABLENAME', #?
     'COMMENT',
     'STRING',
     'NUMBER',
@@ -22,54 +15,29 @@ tokens = (
     'LSQBRACKET', 
     'RSQBRACKET',
     'COMMA',
-    'LCHAVETA', #?
-    'RCHAVETA', #?
-    'DOT', #?
-    'LPAREN', #?
-    'RPAREN' #?
+    'LCHAVETA', 
+    'RCHAVETA', 
+    'DOT', 
+    'LPAREN',
+    'RPAREN' 
 )
 
-# [table-1]
-# key1 = "some string"
-# key2 = 123
-
-# [table-2]
-# key1 = "another string"
-# key2 = 456
-
-# String
-# Integer
-# Float
-# Boolean
-# Offset Date-Time
-# Local Date-Time
-# Local Date
-# Local Time
-# Array
-# Inline Table
-
-#t_ARRAY = r'\= \[(.*(,.*)*)\]'
-#t_DATE = r'\d{4}\-\d{2}\-\d{2}' #YYYY-MM-DD
-#t_TIME = r'\d{2}\:\d{2}\:\d{2}' #HH:MM:SS
 
 t_NEWLINE = r'\n'
     
 
 def t_DATETIME(t):
     r'(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?([Zz]|[+-]\d{2}:\d{2})? | \d{4}\-\d{2}\-\d{2} | \d{2}\:\d{2}\:\d{2})'
-    #t.value = datetime.fromisoformat(t.value)
     return t
 
 def t_COMMENT(t):
     r'\#.*'
     pass
 
-#def t_ARRAY(t):
-#    r'\[\s*((?:".*?")|(?:\[[^\[\]]*\])|(?:-?\d+))(?:\s*,\s*((?:".*?")|(?:\[[^\[\]]*\])|(?:-?\d+)))*\s*\]'
-#    #r'\[[\n]?[\s\t]*(-?\d+(\.\d+)?[\n]?[\s\t]*(,[\n]?[\s\t]*-?\d+(\.\d+)?)*|(\".*[^\"]\"|\'.*[^\']\')[\n]?[\s\t]*(,[\n]?[\s\t]*(\".*[^\"]\"|\'.*[^\']\'))*)\]'
-#   return t
-
-t_STRING = r'("[^"\\]*(?:\\.[^"\\]*)*"|\'[^\'\\]*(?:\\.[^\'\\]*)*\')'
+def t_STRING(t):
+    r'("[^"\\]*(?:\\.[^"\\]*)*"|\'[^\'\\]*(?:\\.[^\'\\]*)*\')'
+    t.value = t.value[1:len(t.value)-1]
+    return t
 
 def t_NUMBER(t):
     r'-?\d+(\.\d+)?' 
@@ -87,14 +55,6 @@ def t_BOOLEAN(t):
         t.value = False
     return t
 
-
-#def t_TABLE(t):
-#    r'[a-zA-Z]\w+'
-#    return t
-
-#def t_SUB_TABLE(t):
-#    r'[a-zA-Z]\w+(.[a-zA-Z]\w+)+'
-#    return t
 
 def t_KEY(t):
     r'[a-zA-Z]\w+'
@@ -114,7 +74,7 @@ t_DOT = r'\.'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 
-t_ignore  = ' \t\r'
+t_ignore  = ' \t'
 
 def t_error(t):
     print('Illegal character: ', t.value[0])
